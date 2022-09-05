@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "139780929473",
+    "firebase_url": "https://meowing-ee0f5-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "meowing-ee0f5",
+    "storage_bucket": "meowing-ee0f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139780929473:android:f2f0705831244c055ea140",
+        "android_client_info": {
+          "package_name": "com.example.meowing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139780929473-7uo5ofehpkvgb5lk49r0ie70pm8hco5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGM8nySyLaPa9torbuyYuSg3tO0GcbZ_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139780929473-7uo5ofehpkvgb5lk49r0ie70pm8hco5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139780929473:android:536a4fa37f5847ff5ea140",
+        "android_client_info": {
+          "package_name": "com.example.mwng"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139780929473-7uo5ofehpkvgb5lk49r0ie70pm8hco5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGM8nySyLaPa9torbuyYuSg3tO0GcbZ_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139780929473-7uo5ofehpkvgb5lk49r0ie70pm8hco5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

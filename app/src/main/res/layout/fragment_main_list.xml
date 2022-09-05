@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+
+        <variable
+            name="mainListViewModel"
+            type="com.example.mwng.viewmodel.MainListViewModel"
+            />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainListFragment">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listViewID"
+            tools:listitem="@layout/list_item"/>
+
+
+    </FrameLayout>
+
+</layout>
