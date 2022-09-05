@@ -17,7 +17,6 @@ import com.example.mwng.repository.UserListDB;
 
 import java.util.ArrayList;
 
-
 public class UserListViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<Cat>> catArrayList;
@@ -28,8 +27,7 @@ public class UserListViewModel extends AndroidViewModel {
         super(application);
 
         firebaseAuthDB = new FirebaseAuthDB(application);
-        String userID = firebaseAuthDB.getUserID();
-        userListDB = new UserListDB(userID);
+        userListDB = new UserListDB(firebaseAuthDB.getUserID());
         catArrayList = userListDB.getArrayListMutableLiveData();
     }
 

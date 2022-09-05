@@ -12,41 +12,32 @@ import com.example.mwng.repository.FirebaseAuthDB;
 import com.example.mwng.repository.UserListDB;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CatProfileViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Boolean> isInUserList;
+    private MutableLiveData<ArrayList<Cat>> catArrayList;
     private UserListDB userListDB;
     private FirebaseAuthDB firebaseAuthDB;
-    private ArrayList<Cat> catArrayList;
 
     public CatProfileViewModel(@NonNull Application application) {
         super(application);
 
-        isInUserList = new MutableLiveData<>();
-        firebaseAuthDB = new FirebaseAuthDB(this.getApplication());
+        firebaseAuthDB = new FirebaseAuthDB(application);
         userListDB = new UserListDB(firebaseAuthDB.getUserID());
-        catArrayList = new ArrayList<>();
-        catArrayList = userListDB.getArrayListMutableLiveData().getValue();
-//        Log.i("size in viewmodel", String.valueOf(catArrayList.size()));
-
+        catArrayList = userListDB.getArrayListMutableLiveData();
     }
 
-    public boolean isInUserList(String key){
-        Log.i("lista utente", String.valueOf(catArrayList.size()));
-        if (existsInList(catArrayList, key)) {
-            return true;
+    public MutableLiveData<ArrayList<Cat>> getCatArrayList() {
+        return catArrayList;
+    }
+
+    public boolean isInUserList(ArrayList<Cat> catArrayList, String chiave){
+        for (int i = 0; i < catArrayList.size(); i++){
+            if (Objects.equals(catArrayList.get(i).getChiave(), chiave))
+                return true;
         }
         return false;
-    }
-
-    boolean existsInList(ArrayList<Cat> list, String chiave){
-        boolean exists = false;
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getChiave() == chiave)
-                exists = true;
-        }
-        return exists;
     }
 
 }
