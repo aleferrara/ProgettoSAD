@@ -40,7 +40,6 @@ public class MainListDB {
                     String chiave = ds.getKey();
                     Cat cat = new Cat(nome, eta, sesso, razza, imageUrl, chiave);
                     catArrayList.add(cat);
-                    Log.i("size", String.valueOf(catArrayList.size()));
                 }
                 arrayListMutableLiveData.setValue(catArrayList);
             }

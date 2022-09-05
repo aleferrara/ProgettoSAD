@@ -62,6 +62,13 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
         textSesso.setText(sesso);
         textRazza.setText(razza);
 
+        /*if (mViewModel.isInUserList(chiave)) {
+            addButton.setClickable(false);
+            addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_grey));
+            removeButton.setClickable(true);
+            removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_red));
+        }*/
+
         return binding.getRoot();
     }
 
