@@ -27,10 +27,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatButton loginButton;
     private TextInputEditText emailText, passwordText;
     private TextView register, resetPassword;
-    private final String LOGPREF = "loginSaved";
-    private SharedPreferences sharedPreferences;
     private String email;
     private String password;
+    private SharedPreferences sharedPreferences;
+    private final String LOGPREF = "loginSaved";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,30 +49,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         resetPassword = binding.pswRst;
         resetPassword.setOnClickListener(this);
 
-        sharedPreferences = this.getSharedPreferences(LOGPREF, this.MODE_PRIVATE);
-        String spEmail = sharedPreferences.getString("email", null);
-        String spPassword = sharedPreferences.getString("password", null);
-        if(spEmail != null && spPassword != null){
-            Log.i("email", spEmail);
-            Log.i("username", spPassword);
-            loginViewModel.signIn(spEmail, spPassword);
-        } else {
-            Log.i("Shared preferences", "null");
-        }
-
         loginViewModel.getLoggedIn().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("email", email);
-                    editor.putString("password", password);
-                    Log.i("New SP", sharedPreferences.getString("email", "null"));
-                    Log.i("New SP", password);
-                    editor.commit();
-                    finish();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                }
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
         });
     }

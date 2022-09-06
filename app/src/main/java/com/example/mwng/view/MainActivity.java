@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,30 +16,33 @@ import android.view.MenuItem;
 
 import com.example.mwng.R;
 import com.example.mwng.databinding.ActivityMainBinding;
+import com.example.mwng.viewmodel.LoginViewModel;
+import com.example.mwng.viewmodel.MainViewModel;
 import com.example.mwng.viewmodel.ReservationViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String LOGPREF = "loginSaved";
+    private MainViewModel mViewModel;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private ActivityMainBinding binding;
-    private SharedPreferences sharedPreferences;
-    private ReservationViewModel reservationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        binding.setMainViewModel(mViewModel);
+        binding.setLifecycleOwner(this);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = binding.drawerLayout;
         navigationView = binding.nvView;
-        sharedPreferences = this.getSharedPreferences(LOGPREF, this.MODE_PRIVATE);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -89,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = null;
         Class fragmentClass;
         switch(menuItem.getItemId()) {
-            case R.id.nav_home:
-                fragmentClass = MainListFragment.class;
-                break;
             case R.id.nav_list:
                 fragmentClass = UserListFragment.class;
                 break;
@@ -99,10 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = ReservationFragment.class;
                 break;
             case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.commit();
+                mViewModel.signOut();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 drawerLayout.closeDrawer(GravityCompat.START);
                 fragmentClass = MainListFragment.class;

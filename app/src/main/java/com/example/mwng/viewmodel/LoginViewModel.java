@@ -2,6 +2,7 @@ package com.example.mwng.viewmodel;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -18,6 +19,7 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<String> email;
     public MutableLiveData<String> password;
     private SharedPreferences sharedPreferences;
+    private final String LOGPREF = "loginSaved";
 
     public LoginViewModel(@NonNull Application application) {
 
@@ -28,10 +30,6 @@ public class LoginViewModel extends AndroidViewModel {
         email = new MutableLiveData<>();
         password = new MutableLiveData<>();
 
-    }
-
-    public void onLoginClicked(){
-        signIn(email.getValue(), password.getValue());
     }
 
     public void signIn(String email, String password){
