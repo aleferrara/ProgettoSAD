@@ -3,7 +3,9 @@ package com.example.mwng.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,6 +27,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatButton loginButton;
     private TextInputEditText emailText, passwordText;
     private TextView register, resetPassword;
+    private final String LOGPREF = "loginSaved";
+    private SharedPreferences sharedPreferences;
+    private String email;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +49,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         resetPassword = binding.pswRst;
         resetPassword.setOnClickListener(this);
 
+        sharedPreferences = this.getSharedPreferences(LOGPREF, this.MODE_PRIVATE);
+        String spEmail = sharedPreferences.getString("email", null);
+        String spPassword = sharedPreferences.getString("password", null);
+        if(spEmail != null && spPassword != null){
+            Log.i("email", spEmail);
+            Log.i("username", spPassword);
+            loginViewModel.signIn(spEmail, spPassword);
+        } else {
+            Log.i("Shared preferences", "null");
+        }
+
         loginViewModel.getLoggedIn().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                if (aBoolean) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.putString("password", password);
+                    Log.i("New SP", sharedPreferences.getString("email", "null"));
+                    Log.i("New SP", password);
+                    editor.commit();
+                    finish();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
             }
         });
     }
@@ -58,8 +84,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(this, RegistrationActivity.class));
                 break;
             case R.id.loginBtn:
-                String email = emailText.getText().toString().trim();
-                String password = passwordText.getText().toString().trim();
+                email = emailText.getText().toString().trim();
+                password = passwordText.getText().toString().trim();
                 loginViewModel.signIn(email, password);
                 break;
             case R.id.pswRst:

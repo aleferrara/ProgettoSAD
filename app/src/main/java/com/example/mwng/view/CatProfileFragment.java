@@ -94,6 +94,19 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.addBtn:
+                addButton.setClickable(false);
+                addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_grey));
+                removeButton.setClickable(true);
+                removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_red));
+                break;
+            case R.id.removeBtn:
+                addButton.setClickable(true);
+                addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_green));
+                removeButton.setClickable(false);
+                removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_grey));
+                break;
+        }
     }
 }
