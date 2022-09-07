@@ -40,4 +40,12 @@ public class CatProfileViewModel extends AndroidViewModel {
         return false;
     }
 
+    public void addCat(String key){
+        userListDB.addCat(key);
+    }
+
+    public void removeCat(String key){
+        userListDB.removeCat(key);
+    }
+
 }

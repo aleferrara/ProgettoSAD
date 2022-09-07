@@ -80,4 +80,12 @@ public class UserListDB {
         return arrayListMutableLiveData;
     }
 
+    public void addCat(String key) {
+        userListReference.child(key).setValue(true);
+    }
+
+    public void removeCat(String key) {
+        userListReference.child(key).removeValue();;
+    }
+
 }

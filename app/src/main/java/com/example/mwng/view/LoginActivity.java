@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +24,7 @@ import com.example.mwng.R;
 import com.example.mwng.databinding.ActivityLoginBinding;
 import com.example.mwng.viewmodel.LoginViewModel;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,6 +35,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView register, resetPassword;
     private String email;
     private String password;
+    private TextInputLayout tilEmail;
+    private TextInputLayout tilPassword;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +55,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         register.setOnClickListener(this);
         resetPassword = binding.pswRst;
         resetPassword.setOnClickListener(this);
+        tilEmail = binding.tilEmail;
+        tilPassword = binding.tilPsw;
+        progressBar = binding.progressBar;
 
         mViewModel.getLoggedIn().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
+                    progressBar.setVisibility(View.GONE);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
+                    progressBar.setVisibility(View.GONE);
                     mViewModel.getErrorMessage().observe(binding.getLifecycleOwner(), new Observer<String>() {
                         @Override
                         public void onChanged(String s) {
@@ -63,6 +76,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+
+        emailText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                tilEmail.setErrorEnabled(false);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        passwordText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                tilPassword.setErrorEnabled(false);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
     }
 
     @Override
@@ -74,6 +118,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.loginBtn:
                 email = emailText.getText().toString().trim();
                 password = passwordText.getText().toString().trim();
+                if (email.isEmpty()) {
+                    tilEmail.setError("Inserire email");
+                    tilEmail.requestFocus();
+                    break;
+                }
+
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    tilEmail.setError("Inserire email valida");
+                    tilEmail.requestFocus();
+                    break;
+                }
+
+                if (password.isEmpty()) {
+                    tilPassword.setError("Inserire password");
+                    tilPassword.requestFocus();
+                    break;
+                }
+
+                if (password.length() < 6) {
+                    tilPassword.setError("La password deve contenere almeno 6 caratteri");
+                    tilPassword.requestFocus();
+                    break;
+                }
+                progressBar.setVisibility(View.VISIBLE);
                 mViewModel.signIn(email, password);
                 break;
             case R.id.pswRst:

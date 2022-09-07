@@ -9,8 +9,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.example.mwng.R;
 import com.example.mwng.databinding.ActivityRegistrationBinding;
 import com.example.mwng.viewmodel.RegistrationViewModel;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,6 +36,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private TextInputEditText textPsw2;
     private AppCompatButton registrationButton;
     private TextView loginButton;
+    private TextInputLayout tilEmail;
+    private TextInputLayout tilPsw;
+    private TextInputLayout tilPsw2;
+    private TextInputLayout tilNome;
+    private TextInputLayout tilCognome;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,107 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         registrationButton.setOnClickListener(this);
         loginButton = binding.lgBtn;
         loginButton.setOnClickListener(this);
+        tilNome = binding.tilNome;
+        tilCognome = binding.tilCognome;
+        tilEmail = binding.tilEmail;
+        tilPsw = binding.tilPsw;
+        tilPsw2 = binding.tilPsw2;
+        progressBar = binding.progressBar;
+
+        textNome.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                tilNome.setErrorEnabled(false);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        textCognome.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                tilCognome.setErrorEnabled(false);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        textEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                tilEmail.setErrorEnabled(false);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        textPsw1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                tilPsw.setErrorEnabled(false);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        textPsw2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                tilPsw2.setErrorEnabled(false);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
     }
 
@@ -61,13 +173,73 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 String cognome = textCognome.getText().toString().trim();
                 String email = textEmail.getText().toString().trim();
                 String password = textPsw1.getText().toString();
+                String password2 = textPsw2.getText().toString();
+
+                if (nome.isEmpty()){
+                    tilNome.setError("Inserire nome");
+                    tilNome.requestFocus();
+                    return;
+                }
+
+                if (cognome.isEmpty()){
+                    tilCognome.setError("Inserire cognome");
+                    tilCognome.requestFocus();
+                    return;
+                }
+
+                if (email.isEmpty()){
+                    tilEmail.setError("Inserire email");
+                    tilEmail.requestFocus();
+                    return;
+                }
+
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    tilEmail.setError("Inserire email valida");
+                    tilEmail.requestFocus();
+                    return;
+                }
+
+                if (password.isEmpty()){
+                    tilPsw.setError("Inserire password");
+                    tilPsw.requestFocus();
+                    return;
+                }
+
+                if (password.length() < 6){
+                    tilPsw.setError("La password deve contenere almeno 6 caratteri");
+                    tilPsw.requestFocus();
+                    return;
+                }
+
+                if (password2.isEmpty()){
+                    tilPsw.setError("Inserire password");
+                    tilPsw.requestFocus();
+                    return;
+                }
+
+                if (password2.length() < 6){
+                    tilPsw2.setError("La password deve contenere almeno 6 caratteri");
+                    tilPsw2.requestFocus();
+                    return;
+                }
+
+                if (!(password.equals(password2))){
+                    tilPsw.setError("Le password non corrispondono");
+                    tilPsw.requestFocus();
+                    return;
+                }
+
+                progressBar.setVisibility(View.VISIBLE);
                 mViewModel.signUp(nome, cognome, email, password);
                 mViewModel.getUserCreated().observe(this, new Observer<Boolean>() {
                     @Override
                     public void onChanged(Boolean aBoolean) {
                         if (aBoolean) {
                             Toast.makeText(getApplicationContext(), "Utente creato correttamente", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                            startActivity(new Intent(RegistrationActivity.this, PostRegistrationActivity.class));
                         } else {
+                            progressBar.setVisibility(View.GONE);
                             mViewModel.getErrorMessage().observe(binding.getLifecycleOwner(), new Observer<String>() {
                                 @Override
                                 public void onChanged(String s) {

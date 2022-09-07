@@ -27,10 +27,15 @@ import java.util.ArrayList;
 
 public class CatProfileFragment extends Fragment implements View.OnClickListener {
 
+    private String nome;
+    private String eta;
+    private String sesso;
+    private String razza;
+    private String chiave;
+    private String image;
     private CatProfileViewModel mViewModel;
     private ImageButton addButton, removeButton;
     private TextView textNome, textEta, textSesso, textRazza;
-    String chiave;
     private ArrayList<Cat> catArrayList;
     private FragmentCatProfileBinding binding;
 
@@ -57,14 +62,14 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
         textEta = binding.textEta;
         textSesso = binding.textSesso;
         textRazza = binding.textRazza;
-        String name = data.getString("nome");
-        String eta = data.getString("eta");
-        String sesso = data.getString("sesso");
-        String razza = data.getString("razza");
-        String image = data.getString("image");
+        nome = data.getString("nome");
+        eta = data.getString("eta");
+        sesso = data.getString("sesso");
+        razza = data.getString("razza");
+        image = data.getString("image");
         chiave = data.getString("chiave");
         Glide.with(this).load(image).into(binding.catProfileImage);
-        textNome.setText(name);
+        textNome.setText(nome);
         textEta.setText(eta);
         textSesso.setText(sesso);
         textRazza.setText(razza);
@@ -78,6 +83,11 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
                     addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_grey));
                     removeButton.setClickable(true);
                     removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_red));
+                } else {
+                    addButton.setClickable(true);
+                    addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_green));
+                    removeButton.setClickable(false);
+                    removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_grey));
                 }
             }
         });
@@ -96,12 +106,14 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.addBtn:
+                mViewModel.addCat(chiave);
                 addButton.setClickable(false);
                 addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_grey));
                 removeButton.setClickable(true);
                 removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_red));
                 break;
             case R.id.removeBtn:
+                mViewModel.removeCat(chiave);
                 addButton.setClickable(true);
                 addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_green));
                 removeButton.setClickable(false);
