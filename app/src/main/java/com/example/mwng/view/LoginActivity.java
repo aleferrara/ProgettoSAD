@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
@@ -22,23 +23,21 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private LoginViewModel loginViewModel;
+    private LoginViewModel mViewModel;
     private ActivityLoginBinding binding;
     private AppCompatButton loginButton;
     private TextInputEditText emailText, passwordText;
     private TextView register, resetPassword;
     private String email;
     private String password;
-    private SharedPreferences sharedPreferences;
-    private final String LOGPREF = "loginSaved";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        binding.setLoginViewModel(loginViewModel);
+        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        binding.setLoginViewModel(mViewModel);
         binding.setLifecycleOwner(this);
         loginButton = binding.loginBtn;
         loginButton.setOnClickListener(this);
@@ -49,10 +48,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         resetPassword = binding.pswRst;
         resetPassword.setOnClickListener(this);
 
-        loginViewModel.getLoggedIn().observe(this, new Observer<Boolean>() {
+        mViewModel.getLoggedIn().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                if (aBoolean) {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                } else {
+                    mViewModel.getErrorMessage().observe(binding.getLifecycleOwner(), new Observer<String>() {
+                        @Override
+                        public void onChanged(String s) {
+                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
         });
     }
@@ -66,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.loginBtn:
                 email = emailText.getText().toString().trim();
                 password = passwordText.getText().toString().trim();
-                loginViewModel.signIn(email, password);
+                mViewModel.signIn(email, password);
                 break;
             case R.id.pswRst:
                 startActivity(new Intent(this, ResetPasswordActivity.class));

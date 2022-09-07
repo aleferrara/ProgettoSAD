@@ -10,17 +10,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.mwng.R;
 import com.example.mwng.databinding.ActivityMainBinding;
-import com.example.mwng.viewmodel.LoginViewModel;
 import com.example.mwng.viewmodel.MainViewModel;
-import com.example.mwng.viewmodel.ReservationViewModel;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 

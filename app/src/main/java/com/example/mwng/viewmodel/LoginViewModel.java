@@ -18,8 +18,7 @@ public class LoginViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> loggedIn;
     public MutableLiveData<String> email;
     public MutableLiveData<String> password;
-    private SharedPreferences sharedPreferences;
-    private final String LOGPREF = "loginSaved";
+    private MutableLiveData<String> errorMessage;
 
     public LoginViewModel(@NonNull Application application) {
 
@@ -29,6 +28,7 @@ public class LoginViewModel extends AndroidViewModel {
         loggedIn = mAuth.getUserLoggedMutableLiveData();
         email = new MutableLiveData<>();
         password = new MutableLiveData<>();
+        errorMessage = mAuth.getErrorMessageMutableLiveData();
 
     }
 
@@ -43,4 +43,9 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getLoggedIn() {
         return loggedIn;
     }
+
+    public MutableLiveData<String> getErrorMessage() {
+        return errorMessage;
+    }
+
 }
