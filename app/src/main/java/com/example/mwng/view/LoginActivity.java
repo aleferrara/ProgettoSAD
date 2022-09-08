@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         binding.setLoginViewModel(mViewModel);
         binding.setLifecycleOwner(this);
+
         loginButton = binding.loginBtn;
         loginButton.setOnClickListener(this);
         emailText = binding.email;
@@ -143,6 +144,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 progressBar.setVisibility(View.VISIBLE);
                 mViewModel.signIn(email, password);
+                mViewModel.getLoggedIn().observe(this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        progressBar.setVisibility(View.GONE);
+                        if (aBoolean) {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        } else {
+                            mViewModel.getErrorMessage().observe(binding.getLifecycleOwner(), new Observer<String>() {
+                                @Override
+                                public void onChanged(String s) {
+                                    Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+                });
                 break;
             case R.id.pswRst:
                 startActivity(new Intent(this, ResetPasswordActivity.class));

@@ -3,6 +3,8 @@ package com.example.mwng.view;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -106,6 +108,15 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.addBtn:
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Aggiunto alla tua lista!").setIcon(R.drawable.ic_done)
+                        .setMessage("Puoi visualizzare la tua lista nell'apposita sezione.")
+                        .setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        }).show();
                 mViewModel.addCat(chiave);
                 addButton.setClickable(false);
                 addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_grey));
@@ -113,11 +124,33 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
                 removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_red));
                 break;
             case R.id.removeBtn:
-                mViewModel.removeCat(chiave);
-                addButton.setClickable(true);
-                addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_green));
-                removeButton.setClickable(false);
-                removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_grey));
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                builder1.setMessage("Rimuovere dalla lista personale?");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Sì",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mViewModel.removeCat(chiave);
+                                addButton.setClickable(true);
+                                addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_green));
+                                removeButton.setClickable(false);
+                                removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_grey));
+                                dialog.cancel();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "Annulla",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
                 break;
         }
     }

@@ -24,6 +24,7 @@ public class FirebaseAuthDB {
     private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
     private MutableLiveData<Boolean> userLoggedMutableLiveData;
     private MutableLiveData<Boolean> userCreatedMutableLiveData;
+    private MutableLiveData<Boolean> emailSentMutableLiveData;
     private MutableLiveData<String> errorMessageMutableLiveData;
 
     public FirebaseAuthDB(Application application) {
@@ -33,6 +34,7 @@ public class FirebaseAuthDB {
         userLoggedMutableLiveData = new MutableLiveData<>();
         userCreatedMutableLiveData = new MutableLiveData<>();
         errorMessageMutableLiveData = new MutableLiveData<>();
+        emailSentMutableLiveData = new MutableLiveData<>();
         usersDB = new UsersDB();
         if (mAuth.getCurrentUser() != null){
             firebaseUserMutableLiveData.setValue(mAuth.getCurrentUser());
@@ -54,8 +56,8 @@ public class FirebaseAuthDB {
                         userLoggedMutableLiveData.setValue(false);
                     }
                 } else {
+                    userLoggedMutableLiveData.setValue(false);
                     errorMessageMutableLiveData.setValue(task.getException().getMessage());
-                    Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -101,6 +103,20 @@ public class FirebaseAuthDB {
         });
     }
 
+    public void resetPassword(String email) {
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    emailSentMutableLiveData.setValue(true);
+                } else {
+                    emailSentMutableLiveData.setValue(false);
+                    errorMessageMutableLiveData.setValue(task.getException().getMessage());
+                }
+            }
+        });
+    }
+
     public MutableLiveData<FirebaseUser> getFirebaseUserMutableLiveData() {
         return firebaseUserMutableLiveData;
     }
@@ -111,6 +127,10 @@ public class FirebaseAuthDB {
 
     public MutableLiveData<Boolean> getUserLoggedMutableLiveData() {
         return userLoggedMutableLiveData;
+    }
+
+    public MutableLiveData<Boolean> getEmailSentMutableLiveData() {
+        return emailSentMutableLiveData;
     }
 
     public String getUserID (){
