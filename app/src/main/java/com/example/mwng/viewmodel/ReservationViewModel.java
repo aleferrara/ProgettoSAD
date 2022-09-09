@@ -39,9 +39,9 @@ public class ReservationViewModel extends AndroidViewModel {
 
     }
 
-    public void onSelection(int slot){
+    public void onSelection(int slot, int day, int month, int year){
 
-        String date = day.getValue() + "/" + month.getValue() + "/" + year.getValue();
+        String date = day+ "/" + month + "/" + year;
         switch (slot) {
             case 1:
                 book(date, m1);

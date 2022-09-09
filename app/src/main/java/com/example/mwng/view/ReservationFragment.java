@@ -64,18 +64,21 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year = datePicker.getYear();
         switch (view.getId()) {
             case R.id.matt1:
-                mViewModel.onSelection(1);
+                mViewModel.onSelection(1, day, month, year);
                 break;
             case R.id.matt2:
-                mViewModel.onSelection(2);
+                mViewModel.onSelection(2, day, month, year);
                 break;
             case R.id.pom1:
-                mViewModel.onSelection(3);
+                mViewModel.onSelection(3, day, month, year);
                 break;
             case R.id.pom2:
-                mViewModel.onSelection(4);
+                mViewModel.onSelection(4, day, month, year);
                 break;
         }
     }

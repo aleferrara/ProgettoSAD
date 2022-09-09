@@ -56,7 +56,7 @@ public class MainListFragment extends Fragment {
                 binding.listViewID.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Bundle data = mViewModel.onListItemClicked(adapterView, view, i);
+                        Bundle data = mViewModel.onListItemClicked(adapterView, i);
                         CatProfileFragment catProfileFragment = new CatProfileFragment();
                         catProfileFragment.setArguments(data);
                         FragmentManager fragmentManager = getParentFragmentManager();

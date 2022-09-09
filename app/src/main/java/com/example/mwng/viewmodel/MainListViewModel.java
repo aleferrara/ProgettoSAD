@@ -31,7 +31,7 @@ public class MainListViewModel extends AndroidViewModel {
         return catArrayList;
     }
 
-    public Bundle onListItemClicked(AdapterView adapterView, View view, int i){
+    public Bundle onListItemClicked(AdapterView adapterView, int i){
         Cat cat = (Cat) adapterView.getItemAtPosition(i);
         Bundle data = new Bundle();
         data.putString("nome", cat.getNome());

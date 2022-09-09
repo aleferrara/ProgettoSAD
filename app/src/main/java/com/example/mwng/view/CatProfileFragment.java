@@ -82,14 +82,14 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
                 catArrayList = mViewModel.getCatArrayList().getValue();
                 if (mViewModel.isInUserList(catArrayList, chiave)) {
                     addButton.setClickable(false);
-                    addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_grey));
+                    addButton.setVisibility(View.GONE);
                     removeButton.setClickable(true);
-                    removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_red));
+                    removeButton.setVisibility(View.VISIBLE);
                 } else {
+                    addButton.setVisibility(View.VISIBLE);
                     addButton.setClickable(true);
-                    addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_green));
+                    removeButton.setVisibility(View.GONE);
                     removeButton.setClickable(false);
-                    removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_grey));
                 }
             }
         });
@@ -119,9 +119,9 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
                         }).show();
                 mViewModel.addCat(chiave);
                 addButton.setClickable(false);
-                addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_grey));
+                addButton.setVisibility(View.GONE);
                 removeButton.setClickable(true);
-                removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_red));
+                removeButton.setVisibility(View.VISIBLE);
                 break;
             case R.id.removeBtn:
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
@@ -133,10 +133,10 @@ public class CatProfileFragment extends Fragment implements View.OnClickListener
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 mViewModel.removeCat(chiave);
+                                addButton.setVisibility(View.VISIBLE);
                                 addButton.setClickable(true);
-                                addButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_add_green));
+                                removeButton.setVisibility(View.GONE);
                                 removeButton.setClickable(false);
-                                removeButton.setImageDrawable(getActivity().getDrawable(R.drawable.ic_remove_grey));
                                 dialog.cancel();
                             }
                         });
