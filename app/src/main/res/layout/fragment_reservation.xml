@@ -36,16 +36,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="20dp"/>
 
-        <!--<CalendarView
-            android:id="@+id/calendar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:day="@={reservationViewModel.day}"
-            android:month="@={reservationViewModel.month}"
-            android:year="@={reservationViewModel.year}"
-            />-->
-
         <DatePicker
             android:id="@+id/calendar"
             android:layout_width="wrap_content"
