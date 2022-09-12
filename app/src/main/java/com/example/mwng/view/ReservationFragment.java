@@ -109,6 +109,15 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
                             }).show();
                 } else {
                     Log.i("UI", "Non effettuata");
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Impossibile prenotare.").setIcon(R.drawable.ic_done)
+                            .setMessage("Non c'è disponibilità per le " + mViewModel.getSlot(slot) + " del " + date)
+                            .setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            }).show();
                 }
             }
         });
