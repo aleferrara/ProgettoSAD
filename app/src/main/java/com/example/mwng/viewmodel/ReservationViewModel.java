@@ -18,28 +18,24 @@ import java.util.Date;
 
 public class ReservationViewModel extends AndroidViewModel {
 
-    public MutableLiveData<Integer> day;
-    public MutableLiveData<Integer> month;
-    public MutableLiveData<Integer> year;
     private static final String m1 = "8.30";
     private static final String m2 = "10.30";
     private static final String p1 = "15.00";
     private static final String p2 = "17.00";
     public ReservationDB dbRef;
     public FirebaseAuthDB mAuth;
+    public MutableLiveData<Boolean> isBookedUp;
 
     public ReservationViewModel(@NonNull Application application) {
 
         super(application);
         mAuth = new FirebaseAuthDB(application);
         dbRef = new ReservationDB();
-        day = new MutableLiveData<>();
-        month = new MutableLiveData<>();
-        year = new MutableLiveData<>();
+        isBookedUp = dbRef.availableMutableLiveData;
 
     }
 
-    public void onSelection(int slot, int day, int month, int year){
+    public String onSelection(int slot, int day, int month, int year){
 
         String date = day+ "/" + month + "/" + year;
         switch (slot) {
@@ -57,11 +53,36 @@ public class ReservationViewModel extends AndroidViewModel {
                 break;
         }
 
+        return date;
+
     }
 
     public void book(String date, String timeSlot) {
-        Log.i("Date", "selected: " + date + " " + timeSlot);
+        Log.i("Date selected", date + " " + timeSlot);
         dbRef.book(date, timeSlot, mAuth.getUserID());
+    }
+
+    public MutableLiveData<Boolean> getBookedUp(){
+        return isBookedUp;
+    }
+
+    public String getSlot(int i) {
+        String slot = "null";
+        switch (i) {
+            case 1:
+                slot = m1;
+                break;
+            case 2:
+                slot = m2;
+                break;
+            case 3:
+                slot = p1;
+                break;
+            case 4:
+                slot = p2;
+                break;
+        }
+        return slot;
     }
 
 }

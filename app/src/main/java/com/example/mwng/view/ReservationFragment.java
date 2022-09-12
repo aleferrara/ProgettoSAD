@@ -1,7 +1,10 @@
 package com.example.mwng.view;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +29,8 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
     private DatePicker datePicker;
     private FragmentReservationBinding binding;
     private Button m1, m2, p1, p2;
+    private int slot;
+    private String date;
 
     public static ReservationFragment newInstance() {
         return new ReservationFragment();
@@ -64,22 +70,48 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
+        slot = 0;
+        date = "null";
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year = datePicker.getYear();
         switch (view.getId()) {
             case R.id.matt1:
-                mViewModel.onSelection(1, day, month, year);
+                date = mViewModel.onSelection(1, day, month, year);
+                slot = 1;
                 break;
             case R.id.matt2:
-                mViewModel.onSelection(2, day, month, year);
+                date = mViewModel.onSelection(2, day, month, year);
+                slot = 2;
                 break;
             case R.id.pom1:
-                mViewModel.onSelection(3, day, month, year);
+                date = mViewModel.onSelection(3, day, month, year);
+                slot = 3;
                 break;
             case R.id.pom2:
-                mViewModel.onSelection(4, day, month, year);
+                date = mViewModel.onSelection(4, day, month, year);
+                slot = 4;
                 break;
         }
+        mViewModel.getBookedUp().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Log.i("UI", "Effettuata");
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Prenotazione aggiunta!").setIcon(R.drawable.ic_done)
+                            .setMessage("Appuntamento alle " + mViewModel.getSlot(slot) + " del " + date)
+                            .setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            }).show();
+                } else {
+                    Log.i("UI", "Non effettuata");
+                }
+            }
+        });
     }
+
 }
