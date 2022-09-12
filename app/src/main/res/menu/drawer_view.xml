@@ -14,6 +14,10 @@
             android:icon="@drawable/ic_calendar"
             android:title="Prenota" />
         <item
+            android:id="@+id/nav_don"
+            android:icon="@drawable/donicon"
+            android:title="Sostienici" />
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
             android:title="Logout" />

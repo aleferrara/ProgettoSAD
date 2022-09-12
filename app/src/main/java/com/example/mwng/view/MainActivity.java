@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_pren:
                 fragmentClass = ReservationFragment.class;
                 break;
+            case R.id.nav_don:
+                fragmentClass = DonationsFragment.class;
+                break;
             case R.id.nav_logout:
                 mViewModel.signOut();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
