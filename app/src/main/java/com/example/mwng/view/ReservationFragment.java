@@ -31,7 +31,7 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
     private Button m1, m2, p1, p2;
     private int slot;
     private String date;
-    private AlertDialog.Builder builder;
+    private boolean dialogShown;
 
     public static ReservationFragment newInstance() {
         return new ReservationFragment();
@@ -45,6 +45,7 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
         mViewModel = ViewModelProviders.of(this).get(ReservationViewModel.class);
         binding.setReservationViewModel(mViewModel);
         binding.setLifecycleOwner(this);
+        dialogShown = false;
 
         datePicker = binding.calendar;
         m1 = binding.matt1;
@@ -90,28 +91,33 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
         mViewModel.getBookedUp().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    Log.i("UI", "Effettuata");
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Prenotazione aggiunta!").setIcon(R.drawable.ic_done)
-                            .setMessage("Appuntamento alle " + mViewModel.getSlot(slot) + " del " + date)
-                            .setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            }).show();
-                } else {
-                    Log.i("UI", "Non effettuata");
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Impossibile prenotare.").setIcon(R.drawable.ic_done)
-                            .setMessage("Non c'è disponibilità per le " + mViewModel.getSlot(slot) + " del " + date)
-                            .setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            }).show();
+                if (!dialogShown) {
+                    dialogShown = true;
+                    if (aBoolean) {
+                        Log.i("UI", "Effettuata");
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Prenotazione aggiunta!").setIcon(R.drawable.ic_done)
+                                .setMessage("Appuntamento alle " + mViewModel.getSlot(slot) + " del " + date)
+                                .setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                        dialogShown = false;
+                                    }
+                                }).show();
+                    } else {
+                        Log.i("UI", "Non effettuata");
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Impossibile prenotare.").setIcon(R.drawable.ic_done)
+                                .setMessage("Non c'è disponibilità per le " + mViewModel.getSlot(slot) + " del " + date)
+                                .setPositiveButton("Okay!", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                        dialogShown = false;
+                                    }
+                                }).show();
+                    }
                 }
             }
         });
