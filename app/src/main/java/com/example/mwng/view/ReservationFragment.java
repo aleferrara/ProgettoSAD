@@ -31,6 +31,7 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
     private Button m1, m2, p1, p2;
     private int slot;
     private String date;
+    private AlertDialog.Builder builder;
 
     public static ReservationFragment newInstance() {
         return new ReservationFragment();
@@ -62,18 +63,11 @@ public class ReservationFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ReservationViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
-    @Override
     public void onClick(View view) {
         slot = 0;
         date = "null";
         int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
+        int month = datePicker.getMonth() + 1;
         int year = datePicker.getYear();
         switch (view.getId()) {
             case R.id.matt1:
