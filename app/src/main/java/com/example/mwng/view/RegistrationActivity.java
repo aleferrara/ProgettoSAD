@@ -243,7 +243,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             mViewModel.getErrorMessage().observe(binding.getLifecycleOwner(), new Observer<String>() {
                                 @Override
                                 public void onChanged(String s) {
-                                    Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                                    if (!s.equals("null"))
+                                        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
                                 }
                             });
                         }

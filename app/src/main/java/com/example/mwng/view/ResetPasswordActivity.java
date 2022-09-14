@@ -74,7 +74,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                             mViewModel.getErrorMessage().observe(binding.getLifecycleOwner(), new Observer<String>() {
                                 @Override
                                 public void onChanged(String s) {
-                                    Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+                                    if (!s.equals("null"))
+                                        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
                                 }
                             });
                         }

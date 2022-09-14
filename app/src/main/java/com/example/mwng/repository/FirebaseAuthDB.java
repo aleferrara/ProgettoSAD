@@ -42,6 +42,7 @@ public class FirebaseAuthDB {
     }
 
     public void signIn(String email, String password){
+        errorMessageMutableLiveData.setValue("null");
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -69,6 +70,7 @@ public class FirebaseAuthDB {
     }
 
     public void createUser(String nome, String cognome, String email, String password){
+        errorMessageMutableLiveData.setValue("null");
         Log.i("password", password);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -104,6 +106,7 @@ public class FirebaseAuthDB {
     }
 
     public void resetPassword(String email) {
+        errorMessageMutableLiveData.setValue("null");
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
