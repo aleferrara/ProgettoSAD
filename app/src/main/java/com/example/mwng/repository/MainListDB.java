@@ -32,13 +32,14 @@ public class MainListDB {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
+                    String ID = ds.child("Id").getValue(String.class);
                     String nome = ds.child("nome").getValue(String.class);
                     String eta = ds.child("eta").getValue(String.class);
                     String sesso = ds.child("sesso").getValue(String.class);
                     String razza = ds.child("razza").getValue(String.class);
                     String imageUrl = ds.child("imageUrl").getValue(String.class);
                     String chiave = ds.getKey();
-                    Cat cat = new Cat(nome, eta, sesso, razza, imageUrl, chiave);
+                    Cat cat = new Cat(ID, nome, eta, sesso, razza, imageUrl, chiave);
                     catArrayList.add(cat);
                 }
                 arrayListMutableLiveData.setValue(catArrayList);

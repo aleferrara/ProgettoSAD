@@ -43,13 +43,14 @@ public class UserListDB {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                            String ID = snapshot.child("Id").getValue().toString();
                             String nome = snapshot.child("nome").getValue().toString();
                             String eta = snapshot.child("eta").getValue(String.class);
                             String sesso = snapshot.child("sesso").getValue(String.class);
                             String razza = snapshot.child("razza").getValue(String.class);
                             String imageUrl = snapshot.child("imageUrl").getValue(String.class);
                             String chiave = snapshot.getKey();
-                            Cat cat = new Cat(nome, eta, sesso, razza, imageUrl, chiave);
+                            Cat cat = new Cat(ID, nome, eta, sesso, razza, imageUrl, chiave);
                             String nometest = cat.getNome();
                             Log.i("testnome", nometest);
                             catArrayList.add(cat);

@@ -2,6 +2,7 @@ package com.example.mwng.model;
 
 public class Cat {
 
+    String Id;
     String Nome;
     String eta;
     String sesso;
@@ -13,7 +14,7 @@ public class Cat {
 
     }
 
-    public Cat(String nome, String eta, String sesso, String razza, String imageID, String chiave) {
+    public Cat(String Id, String nome, String eta, String sesso, String razza, String imageID, String chiave) {
         Nome = nome;
         this.eta = eta;
         this.sesso = sesso;
@@ -21,6 +22,8 @@ public class Cat {
         this.image = imageID;
         this.chiave = chiave;
     }
+
+    public String getID() { return Id; }
 
     public String getNome() {
         return Nome;
